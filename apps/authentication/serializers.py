@@ -15,7 +15,7 @@ class UserCreateSerializer(UserCreateSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    qr_code = serializers.URLField(source="get_qr_code")
+    #qr_code = serializers.URLField(source="get_qr_code")
     class Meta:
         model = User
         fields = [
@@ -23,12 +23,12 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "updated_at",
-            "two_factor_enabled",
-            "otpauth_url",
-            "login_otp",
-            "login_otp_used",
-            "otp_created_at",
-            "qr_code",
+            #"two_factor_enabled",
+            #"otpauth_url",
+            #"login_otp",
+            #"login_otp_used",
+            #"otp_created_at",
+            #"qr_code",
         ]
 
 

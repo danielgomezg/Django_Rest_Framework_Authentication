@@ -8,11 +8,15 @@ from django.contrib.auth.models import (
     BaseUserManager
 )
 
+from ckeditor.fields import RichTextField
+
 #solo de ejemplo de lo que se puede hacer
 from djoser.signals import user_registered, user_activated
 
 #ESTA FUNCION USA EL MODELO USER, EL CUAL VIENE DEFINIDO POR DEFECTO EN DJANGO, POR ESO EL BASEUSERMANAGER
 class UserAccountManager(BaseUserManager):
+    RESTRICTED_USERNAMES = ["admin", "undefined", "null", "superuser", "root", "system"]
+
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError("Users must have an email address.")
@@ -62,15 +66,15 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
-    two_factor_enabled = models.BooleanField(default=False)
-    otpauth_url = models.CharField(max_length=225, blank=True, null=True)
-    otp_base32 = models.CharField(max_length=255, null=True)
-    qr_code = models.ImageField(upload_to="qrcode/", blank=True, null=True)
-    login_otp = models.CharField(max_length=255, null=True, blank=True)
-    login_otp_used = models.BooleanField(default=False)
-    otp_created_at = models.DateTimeField(blank=True, null=True)
+    #two_factor_enabled = models.BooleanField(default=False)
+    #otpauth_url = models.CharField(max_length=225, blank=True, null=True)
+    #otp_base32 = models.CharField(max_length=255, null=True)
+    #qr_code = models.ImageField(upload_to="qrcode/", blank=True, null=True)
+    #login_otp = models.CharField(max_length=255, null=True, blank=True)
+    #login_otp_used = models.BooleanField(default=False)
+    #otp_created_at = models.DateTimeField(blank=True, null=True)
 
-    login_ip = models.CharField(max_length=255, blank=True, null=True)
+    #login_ip = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserAccountManager()
 
@@ -85,11 +89,17 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
             return self.qr_code.url
         return None
 
+class Userprofile(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+
+    bio = RichTextField()
+
 #solo de ejemplo de lo que se puede hacer
-def post_user_registered():
+def post_user_registered(sender, user, request, **kwargs):
     print("User has registered")
 
-def post_user_activated():
+def post_user_activated(sender, user, request, **kwargs):
     print("User has registered")
 
 user_registered.connect(post_user_registered)
