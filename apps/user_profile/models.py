@@ -4,7 +4,7 @@ from django.db import models
 from django.conf import settings
 from ckeditor.fields import RichTextField
 from djoser.signals import user_registered, user_activated
-#from apps.media.models import Media
+from apps.media.models import Media
 
 User = settings.AUTH_USER_MODEL
 
@@ -14,21 +14,21 @@ class UserProfile(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    #profile_picture = models.ForeignKey(
-        #Media,
-        #on_delete=models.SET_NULL,
-       # null=True,
-      #  blank=True,
-     #   related_name="profile_picture",
-    #)
+    profile_picture = models.ForeignKey(
+        Media,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="profile_picture",
+    )
 
-    #banner_picture = models.ForeignKey(
-     #   Media,
-      #  on_delete=models.SET_NULL,
-       # null=True,
-        #blank=True,
-        #related_name="banner_picture",
-    #)
+    banner_picture = models.ForeignKey(
+        Media,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="banner_picture",
+    )
 
     biography = RichTextField()
     birthday = models.DateField(blank=True, null=True)
@@ -51,18 +51,18 @@ def post_user_activated(user, *args, **kwargs):
     profile = UserProfile.objects.create(user=user)
     profile_picture = Media.objects.create(
         order=1,
-        name="user_default_profile.png",
-        size="2.3 KB",
+        name="danygg.png",
+        size="10.4 KB",
         type="png",
-        key="media/profiles/default/user_default_profile.png",
+        key="media/profiles/default/danygg.png",
         media_type="image",
     )
     banner_picture = Media.objects.create(
         order=1,
-        name="user_default_bg.jpg",
-        size="200.5 KB",
-        type="jpg",
-        key="media/profiles/default/user_default_bg.jpg",
+        name="spiderman-sony-spiderverso-1567749360.jpeg",
+        size="143.9 KB",
+        type="jpeg",
+        key="media/profiles/default/spiderman-sony-spiderverso-1567749360.jpeg",
         media_type="image",
     )
     profile.profile_picture = profile_picture

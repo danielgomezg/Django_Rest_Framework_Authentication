@@ -16,6 +16,7 @@ environ.Env.read_env()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
+VALID_API_KEYS = env.str("VALID_API_KEYS").split(",")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,11 +34,13 @@ DJANGO_APPS = [
 
 PROJECT_APPS = [
     'apps.authentication',
-    #'apps.user_profile',
+    'apps.user_profile',
+    'apps.media',
 ]
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework_api',
     'channels',
     'djoser',
     "rest_framework_simplejwt",
@@ -218,7 +221,16 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         }
-    }
+    },
+
+    #'default': {
+    #    'ENGINE': 'django.db.backends.postgresql',
+    #    'NAME': 'django_db', #env("DATABASE_NAME"),
+    #    'USER': 'postgres', #env("DATABASE_USER"),
+    #    'PASSWORD': 'admin', #env("DATABASE_PASSWORD"),
+    #    'HOST': 'localhost', #env("DATABASE_HOST"),
+    #    'PORT': 5432
+    #}
 }
 
 CHANNELS_ALLOWED_ORIGINS = "http://localhost:3000"
