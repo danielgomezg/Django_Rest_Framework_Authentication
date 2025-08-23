@@ -89,12 +89,6 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
             return self.qr_code.url
         return None
 
-class Userprofile(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
-    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
-
-    bio = RichTextField()
-
 #solo de ejemplo de lo que se puede hacer
 def post_user_registered(sender, user, request, **kwargs):
     print("User has registered")
