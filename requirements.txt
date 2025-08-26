@@ -4,6 +4,10 @@ djangorestframework-api-response==0.1.0
 django-redis==5.4.0
 django-environ==0.9.0
 
+pyotp==2.9.0
+qrcode==8.0
+pillow==11.0.0
+
 uvicorn==0.32.0
 
 channels==4.1.0
@@ -29,3 +33,6 @@ boto3==1.35.15
 botocore==1.35.15
 cryptography==41.0.7
 rsa==4.9
+
+#Sirve para controlar y limitar la cantidad de login que se puede hacer, es decir, que no se ingrese por fuerza bruta
+django-axes==7.0.0

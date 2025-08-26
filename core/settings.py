@@ -23,6 +23,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
+#Django valida el origen de las peticiones POST (como el login del admin) para evitar ataques tipo CSRF.
+CSRF_TRUSTED_ORIGINS = [
+    "https://crispy-spoon-xvq7w59wq66fpr47-8002.app.github.dev",
+    "http://localhost:8002",
+    "https://localhost:8002",
+    "http://127.0.0.1:8002",
+    
+]
+
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,12 +56,19 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     'ckeditor',
     'ckeditor_uploader',
+    'axes'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 CKEDITOR_CONFIGS = {"default": {"toolbar": "full", "autoParagraph": False}}
 CKEDITOR_UPLOAD_PATH = "media/"
+
+AXES_FAILURE_LIMIT = 5
+#se configura con lamba desde la version 7 esta en la documentacion, 
+#en este caso se puede volver a interntar inciar sesion despues de 5 min
+AXES_COOLOFF_TIME = lambda request: timedelta(minutes=5) 
+AXES_LOCK_OUT_AT_FAILURE = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,6 +79,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # AxesMiddleware should be the last middleware in the MIDDLEWARE list.
+    # It only formats user lockout messages and renders Axes lockout responses
+    # on failed user authentication attempts from login views.
+    # If you do not want Axes to override the authentication response
+    # you can skip installing the middleware and use your own views.
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -160,6 +183,8 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = (
+    # AxesStandaloneBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
+    'axes.backends.AxesStandaloneBackend',
     "django.contrib.auth.backends.ModelBackend",
 )
 

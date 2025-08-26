@@ -66,15 +66,16 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
-    #two_factor_enabled = models.BooleanField(default=False)
-    #otpauth_url = models.CharField(max_length=225, blank=True, null=True)
-    #otp_base32 = models.CharField(max_length=255, null=True)
-    #qr_code = models.ImageField(upload_to="qrcode/", blank=True, null=True)
-    #login_otp = models.CharField(max_length=255, null=True, blank=True)
-    #login_otp_used = models.BooleanField(default=False)
-    #otp_created_at = models.DateTimeField(blank=True, null=True)
+    #Para la autenticacion de otp one time password (pass de un solo uso)
+    two_factor_enabled = models.BooleanField(default=False)
+    otpauth_url = models.CharField(max_length=225, blank=True, null=True)
+    otp_base32 = models.CharField(max_length=255, null=True)
+    qr_code = models.ImageField(upload_to="qrcode/", blank=True, null=True)
+    login_otp = models.CharField(max_length=255, null=True, blank=True)
+    login_otp_used = models.BooleanField(default=False)
+    otp_created_at = models.DateTimeField(blank=True, null=True)
 
-    #login_ip = models.CharField(max_length=255, blank=True, null=True)
+    login_ip = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserAccountManager()
 
