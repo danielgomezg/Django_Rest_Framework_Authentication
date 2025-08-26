@@ -28,8 +28,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://crispy-spoon-xvq7w59wq66fpr47-8002.app.github.dev",
     "http://localhost:8002",
     "https://localhost:8002",
-    "http://127.0.0.1:8002",
-    
+    "http://127.0.0.1:8002",   
 ]
 
 DJANGO_APPS = [
